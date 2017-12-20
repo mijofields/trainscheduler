@@ -1,0 +1,73 @@
+4<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- view port tag-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"> <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script> <!-- moment-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!--jquery cdn-->
+    <script type="text/javascript" src="train.js"></script>
+	<title>Train Scheduler</title>
+</head>
+<body>
+
+	<div class="container">
+
+<nav class="navbar fixed-top navbar-dark bg-primary">
+  <h2 class="navbar-brand">Train Times a coming...<span class="glyphicon glyphicon-calendar"></span></h2>  
+</nav>
+<br>
+<br>
+<br>
+<br>
+
+<div>
+	
+  <form class="border border-info p-2">
+  	<div class="panel panel-primary">
+  		<div class="panel-heading"><h5 class="panel-title">Add a Train:</h5></div>
+    <div class="form-group row panel-body">
+      <label for="trainname" class="col-2 col-form-label">Train Name:</label>
+      <div class="col-4">
+        <input type="text" class="form-control" id="trainname-input" placeholder="Thomas the Tank Engine">
+      </div>
+      <label for="destination" class="col-2 col-form-label">Destination:</label>
+      <div class="col-4">
+        <input type="text" class="form-control" id="destination-input" placeholder="Anchorage">
+      </div>
+  </div>
+     <div class="form-group row">
+     	<label for="traintime" class="col-2 col-form-label">Time of First Train:</label>
+      <div class="col-4">
+        <input type="time" class="form-control" id="traintime-input" placeholder="10:00">
+      </div>
+      <label for="frequency" class="col-2 col-form-label">Frequency:</label>
+      <div class="col-4">
+        <input type="number" class="form-control" id="frequency-input" placeholder="53 mins">
+      </div>
+     
+      </div>
+      <button type="button" class="btn btn-success" id="submit">Submit</button>
+  	</div>
+	  </form>
+
+    
+ 
+
+
+
+</div>
+</div>
+
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+<script>
+
+</script>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</html>
