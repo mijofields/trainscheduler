@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script> <!-- moment-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!--jquery cdn-->
     <script type="text/javascript" src="train.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Codystar|Keania+One" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
 	<title>Train Scheduler</title>
 </head>
 <body>
@@ -16,16 +18,36 @@
 	<div class="container">
 
 <nav class="navbar fixed-top navbar-dark bg-primary">
-  <h2 class="navbar-brand">Train Times a coming...<span class="glyphicon glyphicon-calendar"></span></h2>  
+  <h2 class="navbar-brand">Train Times a coming...</h2><h4 class="float-right" id="clock"></h4>  
 </nav>
 <br>
-<br>
+<br>  
 <br>
 <br>
 
 <div>
+
+<table class="table mb-4 pb-4" id=train-table>
+  <thead id="head">
+    <tr>
+      <th>Train Name</th>
+      <th>Destination</th>
+      <th>Frequency (min)</th>
+      <th>Next Arrival</th>
+      <th>Minutes Away</th>
+    </tr>
+  </thead>
+  <tbody id="body">
+    <tr>
+ 
+    </tr>   
+  </tbody>
+</table>
+
+
+
 	
-  <form class="border border-info p-2">
+  <form class="container border border-info" id="form">
   	<div class="panel panel-primary">
   		<div class="panel-heading"><h5 class="panel-title">Add a Train:</h5></div>
     <div class="form-group row panel-body">
@@ -41,11 +63,11 @@
      <div class="form-group row">
      	<label for="traintime" class="col-2 col-form-label">Time of First Train:</label>
       <div class="col-4">
-        <input type="time" class="form-control" id="traintime-input" placeholder="10:00">
+        <input type="time" class="form-control" id="traintime-input" placeholder="">
       </div>
       <label for="frequency" class="col-2 col-form-label">Frequency:</label>
       <div class="col-4">
-        <input type="number" class="form-control" id="frequency-input" placeholder="53 mins">
+        <input type="number" class="form-control" id="frequency-input" placeholder="How frequently the train leaves in minutes">
       </div>
      
       </div>
@@ -63,10 +85,10 @@
 
 </body>
 
-<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-<script>
 
-</script>
+
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+
 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
