@@ -21,7 +21,7 @@ var config = {
 
 function child_added () {
 
-$("#body").empty(); //clear all trains displayed so displa is not multiplied
+$("#body").empty(); //clear all trains displayed so display is not multiplied
 
 
  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
@@ -29,10 +29,33 @@ $("#body").empty(); //clear all trains displayed so displa is not multiplied
         var name = childSnapshot.val().Name;
         var destination = childSnapshot.val().Destination;
         var frequency = childSnapshot.val().Frequency;
-        var traintime = childSnapshot.val().Time;
+        var traintime = moment(childSnapshot.val().Time, "HH:mm");
+
+        // console.log("train time: "+ traintime);
+
+        var currentTime = moment();
+
+        // console.log("current time: "+currentTime);
+
+        var diff = currentTime.diff(moment(traintime), "minutes");
+
+        // console.log(diff);
+
+        var timeRemainder = diff % frequency;
+
+        // console.log(timeRemainder);
+
+        var minUntilTrain = frequency - timeRemainder;
+
+        // console.log(minUntilTrain);
+
+        var nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm");
+
+        // console.log(nextTrain);
 
 
-$("#body").append('<tr><td>'+name+'</td><td>'+destination+'</td><td>'+frequency+'</td><td>next arrival</td><td>Mins away</td></tr>');
+
+$("#body").append('<tr><td>'+name+'</td><td>'+destination+'</td><td>'+frequency+'</td><td>'+nextTrain+'</td><td>'+minUntilTrain+'</td><td></td></tr>');
 
 }); //firebase child_added
 
@@ -60,6 +83,8 @@ function displayTime()
 
 $("#submit").on("click", function(){
 
+  $("#alert").empty();
+
 event.preventDefault();
 
 var trainname = $("#trainname-input").val().trim();
@@ -67,6 +92,27 @@ var destination = $("#destination-input").val().trim();
 var traintime = $("#traintime-input").val().trim(); //use moment for this stiupulate X
 var frequency = parseInt($("#frequency-input").val().trim());
 
+
+//make sure all the necessary values are entered 'return false' prevents the function firing
+
+if (trainname === "") {
+        $("#alert").text("Please enter a train name").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+        return false; //means the sumbit does not happen
+    }
+
+    if (destination === "") {
+        $("#alert").text("Please enter a desination").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+        return false;
+    }
+    if (traintime === "") {
+       $("#alert").text("Please enter a first train time").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+        return false;
+    }
+    if (isNaN(frequency)) {
+        $("#alert").text("Please enter the frequency of train departures").fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200);
+        return false;
+        console.log(frequency);
+    };
 
 database.ref().push({
         Name: trainname,
@@ -100,41 +146,6 @@ clear_inputs();
         var nextTrain = moment().add(minutesTillTrain, "minutes")
 
         var arrivalTime = moment(nextTrain).format("hh:mm");
-
-
-
-  // var tFrequency = 3;
-
-  //   // Time is 3:30 AM
-  //   var firstTime = "03:30";
-
-  //   // First Time (pushed back 1 year to make sure it comes before current time)
-  //   var firstTimeConverted = moment(firstTime, "hh:mm").subtract(1, "years");
-  // //   console.log(firstTimeConverted);
-
-  //   // Current Time
-  //   var currentTime = moment().format("HH:MM");
-  //   var firsttime = moment(traintime).format("HH:MM");
-  //   console.log("current time: "+currentTime);
-  //   console.log("first time: "+firsttime);
-
-  //   console.log(traintime.diff(currentTime, "minutes"));
-
-  //   // Difference between the times
-  //   var diffTime = moment().diff(moment(traintime), "minutes");
-  //   console.log("DIFFERENCE IN TIME: " + diffTime);
-
-  //   // Time apart (remainder)
-  //   var Remainder = diffTime % frequency;
-  //   console.log(Remainder);
-
-  //   // Minute Until Train
-  //   var MinutesTillTrain = frequency - Remainder;
-  //   console.log("MINUTES TILL TRAIN: " + MinutesTillTrain);
-
-  //   // Next Train
-  //   var nextTrain = moment().add(MinutesTillTrain, "minutes");
-  //   console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
 
 
