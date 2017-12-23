@@ -38,14 +38,29 @@ $("#body").empty(); //clear all trains displayed so display is not multiplied
         var removeBtn = '<button type="button" class="btn btn-danger remove active" id=' + key + '>Remove</button>';
 
 
+
+
+    if (moment().diff(moment(traintime)) < 0 )    { //this allows for the first time to depart after current time like in the am!
+
+
+      nextTrain = moment(traintime).format("HH:mm");
+      tMinutesTillTrain = -moment().diff(moment(traintime), "minutes");
+
+      $("#body").prepend('<tr><td>'+name+'</td><td>'+destination+'</td><td>'+frequency+'</td><td>'+nextTrain+'</td><td>'+tMinutesTillTrain+'</td><td>'+removeBtn+'</td></tr>');
+
+
+
+    } else {
+
+
     // First Time (pushed back 1 year to make sure it comes before current time) why? this fs it up for trains that start later than current time
-    var firstTimeConverted = moment(traintime).subtract(1, "years");
+    // var firstTimeConverted = moment(traintime).subtract(1, "years");
 
     // Current Time
     var currentTime = moment();
 
     // Difference between the times
-    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var diffTime = moment().diff(moment(traintime), "minutes");
 
     // Time apart (remainder)
     var tRemainder = diffTime % frequency;
@@ -60,6 +75,7 @@ $("#body").empty(); //clear all trains displayed so display is not multiplied
 
 $("#body").prepend('<tr><td>'+name+'</td><td>'+destination+'</td><td>'+frequency+'</td><td>'+nextTrain+'</td><td>'+tMinutesTillTrain+'</td><td>'+removeBtn+'</td></tr>');
 
+}
 
 }); //firebase child_added
 
