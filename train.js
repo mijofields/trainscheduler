@@ -2,6 +2,8 @@ $(document).ready(function() {
 
 //initialize fireside DB
 
+setInterval('window.location.reload()', 60000); //have page update every min
+
 var config = {
     apiKey: "AIzaSyBuGVF1brmhp7-jpOx-ugFpyGxDEk0Syks",
     authDomain: "trainscheduler-265f0.firebaseapp.com",
@@ -17,9 +19,11 @@ var config = {
 
   child_added(); //populate the timetable
   displayTime();
+  remove();
 
 
 function child_added () {
+
 
 $("#body").empty(); //clear all trains displayed so display is not multiplied
 
@@ -30,32 +34,32 @@ $("#body").empty(); //clear all trains displayed so display is not multiplied
         var destination = childSnapshot.val().Destination;
         var frequency = childSnapshot.val().Frequency;
         var traintime = moment(childSnapshot.val().Time, "HH:mm");
-
-        // console.log("train time: "+ traintime);
-
-        var currentTime = moment();
-
-        // console.log("current time: "+currentTime);
-
-        var diff = currentTime.diff(moment(traintime), "minutes");
-
-        // console.log(diff);
-
-        var timeRemainder = diff % frequency;
-
-        // console.log(timeRemainder);
-
-        var minUntilTrain = frequency - timeRemainder;
-
-        // console.log(minUntilTrain);
-
-        var nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm");
-
-        // console.log(nextTrain);
+        var key = childSnapshot.key;
+        var removeBtn = '<button type="button" class="btn btn-danger remove active" id=' + key + '>Remove</button>';
 
 
+    // First Time (pushed back 1 year to make sure it comes before current time) why? this fs it up for trains that start later than current time
+    var firstTimeConverted = moment(traintime).subtract(1, "years");
 
-$("#body").append('<tr><td>'+name+'</td><td>'+destination+'</td><td>'+frequency+'</td><td>'+nextTrain+'</td><td>'+minUntilTrain+'</td><td></td></tr>');
+    // Current Time
+    var currentTime = moment();
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % frequency;
+
+    // Minute Until Train
+    var tMinutesTillTrain = frequency - tRemainder;
+
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes").format("HH:mm");
+
+
+
+$("#body").prepend('<tr><td>'+name+'</td><td>'+destination+'</td><td>'+frequency+'</td><td>'+nextTrain+'</td><td>'+tMinutesTillTrain+'</td><td>'+removeBtn+'</td></tr>');
+
 
 }); //firebase child_added
 
@@ -71,15 +75,14 @@ $("#frequency-input").val("");
 
 };
 
-function displayTime() 
-{
+function displayTime() {
+
     var time = moment().format('HH:mm:ss');
     $('#clock').html(time);
     setInterval(displayTime, 1000);
 
-
-
 };
+
 
 $("#submit").on("click", function(){
 
@@ -127,37 +130,30 @@ clear_inputs();
 
 
 
-      //subtract one year to ensure to time conflicts over calculated microseconds.
-        var fixTime = moment(traintime, "hh:mm").subtract(1, "years");
-        console.log("fixed time: "+fixTime)
-        //call moments library
-        var currentMinute = moment().format("HH:MM");
-        console.log("current time: "+currentMinute);
-        //format currentMinute, post to html
-        // $("#currentTimeSpan").html(" Current Time : " + currentMinute.format("hh:mm"));
+}); //end of submit function
 
-        var timeDifference = moment().diff(moment(fixTime), "minutes");
-        console.log("difference: "+timeDifference);
 
-        var timeRemaining = timeDifference % frequency;
+function remove () { //when the remove button is clicked
 
-        var minutesTillTrain = frequency - timeRemaining;
+$(document).on("click", ".remove", deleteTrain); //doccument because there are created dynamically
 
-        var nextTrain = moment().add(minutesTillTrain, "minutes")
+    function deleteTrain() {
+        var deleteBtn = $(this).attr("id");
 
-        var arrivalTime = moment(nextTrain).format("hh:mm");
+        database.ref().child(deleteBtn).remove(); //remove the record from firebase using the id
+
+        location.reload();
 
 
 
-
-
-}); //end of function
-
-
-
-
-
+}}; //end of remove
 
 
 
 }); //end of document ready
+
+
+
+
+
+ 
